@@ -27,16 +27,21 @@ document.querySelector('#app').innerHTML = `
     </div>
     <div class="menu-settings">
     <div class="input-group">
-    <div class="form-outline" data-mdb-input-init>
+    <div class="form-outline" id="form-outline-id" data-mdb-input-init>
     <label class="form-label" for="form1">Search</label>
         <input type="search" id="form1" class="form-control" placeholder="Case Number"
-        onkeyup="search(event)"
         />
     </div>
-    <p></p>
     <button type="button" class="btn btn-primary" data-mdb-ripple-init>New Patient
         <i class="fas fa-search"></i>
     </button>
     </div>
     </div>
 `
+
+document.querySelector('#form1').addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') {
+        localStorage.setItem("caseNumber", document.getElementById('form1').value);
+        window.location.replace("patient-information/general-info.html");
+      }
+});
