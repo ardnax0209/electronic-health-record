@@ -4,9 +4,9 @@ document.querySelector('#app').innerHTML = `
         <img src="public/logo-ehr.png" alt="logo" width="400" height="96">
     </div>
     <div id="person-info">
-        Rafanan, Aleczandra
+        ${staffName}
         <br/>
-        210 2** ***
+        ${caseNum}
     </div>
     <div id="person-pic">
         <img src="public/picture-sample.jpg" alt="logo" width="150" height="100">
