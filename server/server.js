@@ -85,6 +85,43 @@ db.close((err) => {
   console.log('Close the database connection.');
 });
 })
+
+app.get('/caseNumber', function (req, res, next) {
+  caseNum = req.get('CaseNumber');
+  const path = "server/db/chinese-general-hospital-db.db";
+
+  // open the database
+	let db = new sqlite3.Database(path, sqlite3.OPEN_READWRITE, (err) => {
+	  if (err) {
+		console.error(err.message);
+	  } else {
+		console.log("Connected to the database.");
+		db.all(`
+		SELECT patientId, nameOfPt, status FROM caseInformation
+		WHERE caseNumber = ${caseNum}`, (err, rows) => {
+			try {
+			  rows.forEach(rows => {
+				res.json({
+					patientId: rows.patientId,
+					nameOfPt: rows.nameOfPt,
+					status: rows.status
+				  });
+			});
+			} catch (e) {
+			  res.json("No result");
+			}
+			
+		});
+	  }
+	});
+
+	db.close((err) => {
+	  if (err) {
+		console.error(err.message);
+	  }
+	  console.log('Close the database connection.');
+	});
+})
  
 app.listen(PORT, function () {
   console.log('CORS-enabled web server listening on port ' + PORT)

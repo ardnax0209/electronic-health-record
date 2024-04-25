@@ -1,3 +1,5 @@
+import { checkCase } from './chckCaseNumber.js';
+
 let jsonRes = await fetch('http://localhost:8080/user', {
           method: 'GET',
           headers: {
@@ -39,9 +41,4 @@ document.querySelector('#app').innerHTML = `
     </div>
 `
 
-document.querySelector('#form1').addEventListener('keypress', function (e) {
-    if (e.key === 'Enter') {
-        localStorage.setItem("caseNumber", document.getElementById('form1').value);
-        window.location.replace("patient-information/general-info.html");
-      }
-});
+checkCase(document.querySelector('#form1'));
