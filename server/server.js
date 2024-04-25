@@ -49,6 +49,42 @@ db.close((err) => {
 app.get('/version', function (req, res, next) {
   res.json({msg: process.env.VERSION})
 })
+
+app.get('/user', function (req, res, next) {
+  uName = req.get('Username');
+  const path = "server/db/chinese-general-hospital-db.db";
+
+  // open the database
+let db = new sqlite3.Database(path, sqlite3.OPEN_READWRITE, (err) => {
+  if (err) {
+    console.error(err.message);
+  } else {
+    console.log("Connected to the database.");
+    db.all(`
+    SELECT username, name FROM loginInformation
+    WHERE username = ${uName}`, (err, rows) => {
+        try {
+          rows.forEach(rows => {
+            res.json({
+                caseNumber: rows.username,
+                name: rows.name
+              });
+        });
+        } catch (e) {
+          res.json("Error. Go back to homepage.");
+        }
+        
+    });
+  }
+});
+
+db.close((err) => {
+  if (err) {
+    console.error(err.message);
+  }
+  console.log('Close the database connection.');
+});
+})
  
 app.listen(PORT, function () {
   console.log('CORS-enabled web server listening on port ' + PORT)

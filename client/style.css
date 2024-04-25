@@ -25,8 +25,18 @@
 #person-pic {
 	/* border: double; */
 	border: 1px solid black;
+	margin-left: 1%;
+}
+
+#person-info {
+	padding-top: 2%;
 }
 
 #page-logo {
 	margin-right: auto;
+}
+
+/* Bootstrap */
+.form-outline {
+	margin-bottom: 25%;
 }
