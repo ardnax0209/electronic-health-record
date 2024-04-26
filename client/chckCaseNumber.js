@@ -9,7 +9,7 @@ export function checkCase(element) {
 			  },
 			})
 			  .then(response => response.json())
-			  .then(response => console.log(response))
+			  .then(response => transferPage(response))
 			  .catch(err => console.error(err));
 		  }
 	});
@@ -17,7 +17,13 @@ export function checkCase(element) {
   function transferPage(patientCase) {
 	if (patientCase != "No result") {
 		localStorage.setItem("caseNumber", element.value);
-        window.location.replace("patient-information/general-info.html");
+		
+		if (window.location == "http://localhost:5173/staff-homepage.html") {
+			window.location.replace("patient-information/general-info.html");
+		} else {
+			window.location.replace("general-info.html");
+		}
+		
 	} else {
 		alert(patientCase);
 		document.getElementById('form1').value = "";

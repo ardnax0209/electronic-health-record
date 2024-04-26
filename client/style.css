@@ -36,6 +36,15 @@
 	margin-right: auto;
 }
 
+.menu-settings {
+	display: flex;
+}
+
+.case-information {
+	margin-left: 1%;
+	padding-top: 11%;
+}
+
 /* Bootstrap */
 #form-outline-id {
 	margin-bottom: 25%;

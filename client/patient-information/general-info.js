@@ -1,3 +1,5 @@
+import { checkCase } from '../chckCaseNumber.js';
+
 let jsonRes = await fetch('http://localhost:8080/user', {
           method: 'GET',
           headers: {
@@ -32,76 +34,79 @@ document.querySelector('#app').innerHTML = `
              <input type="search" id="form1" class="form-control" placeholder="Case Number"
             />
             </div>
-        </div>
-		<!-- Bootstrap row -->
-		<div class="row" id="body-row">
-			<!-- Sidebar -->
-			<div id="sidebar-container" class="sidebar-expanded d-none d-md-block">
-				<!-- d-* hiddens the Sidebar in smaller devices. Its itens can be kept on the Navbar 'Menu' -->
-				<!-- Bootstrap List Group -->
-				<ul class="list-group">
-					<!-- Separator with title -->
-					<!-- <li class="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">
-						<small>MAIN MENU</small>
-					</li> -->
-					<!-- /END Separator -->
-					<!-- Menu with submenu -->
-					<a href="#submenu1" data-toggle="collapse" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
-						<div class="d-flex w-100 justify-content-start align-items-center">
-							<span class="fa fa-dashboard fa-fw mr-3"></span>
-							<span class="menu-collapsed">Profile</span>
-							<span class="submenu-icon ml-auto"></span>
-						</div>
-					</a>
-					<!-- Submenu content -->
-					<div id='submenu1' class="collapse sidebar-submenu">
-						<a href="#" class="list-group-item list-group-item-action bg-dark text-white">
-							<span class="menu-collapsed">General Information</span>
-						</a>
+			<!-- Bootstrap row -->
+			<!-- d-* hiddens the Sidebar in smaller devices. Its itens can be kept on the Navbar 'Menu' -->
+			<!-- Bootstrap List Group -->
+			<ul class="list-group">
+				<!-- Separator with title -->
+				<!-- <li class="list-group-item sidebar-separator-title text-muted d-flex align-items-center menu-collapsed">
+					<small>MAIN MENU</small>
+				</li> -->
+				<!-- /END Separator -->
+				<!-- Menu with submenu -->
+				<a href="#submenu1" data-toggle="collapse" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start" id="profile-container">
+					<div class="d-flex w-100 justify-content-start align-items-center">
+						<span class="fa fa-dashboard fa-fw mr-3"></span>
+						<span class="menu-collapsed">Profile</span>
+						<span class="submenu-icon ml-auto"></span>
 					</div>
-					<a href="#submenu2" data-toggle="collapse" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
-						<div class="d-flex w-100 justify-content-start align-items-center">
-							<span class="fa fa-user fa-fw mr-3"></span>
-							<span class="menu-collapsed">Diagnostic Findings</span>
-							<span class="submenu-icon ml-auto"></span>
-						</div>
+				</a>
+				<!-- Submenu content -->
+				<div id='submenu1' class="collapse sidebar-submenu">
+					<a href="#" class="list-group-item list-group-item-action bg-dark text-white" id="gen-info">
+						<span class="menu-collapsed">General Information</span>
 					</a>
-					<!-- Submenu content -->
-					<div id='submenu2' class="collapse sidebar-submenu">
-						<a href="#" class="list-group-item list-group-item-action bg-dark text-white">
-							<span class="menu-collapsed">X-ray</span>
-						</a>
-						<a href="#" class="list-group-item list-group-item-action bg-dark text-white">
-							<span class="menu-collapsed">MRI</span>
-						</a>
-						<a href="#" class="list-group-item list-group-item-action bg-dark text-white">
-							<span class="menu-collapsed">CT Scan</span>
-						</a>
-						<a href="#" class="list-group-item list-group-item-action bg-dark text-white">
-							<span class="menu-collapsed">CBC</span>
-						</a>
+				</div>
+				<a href="#submenu2" data-toggle="collapse" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+					<div class="d-flex w-100 justify-content-start align-items-center">
+						<span class="fa fa-user fa-fw mr-3"></span>
+						<span class="menu-collapsed">Diagnostic Findings</span>
+						<span class="submenu-icon ml-auto"></span>
 					</div>
-					<a href="#submenu3" data-toggle="collapse" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
-						<div class="d-flex w-100 justify-content-start align-items-center">
-							<span class="fa fa-user fa-fw mr-3"></span>
-							<span class="menu-collapsed">Notes</span>
-							<span class="submenu-icon ml-auto"></span>
-						</div>
+				</a>
+				<!-- Submenu content -->
+				<div id='submenu2' class="collapse sidebar-submenu">
+					<a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+						<span class="menu-collapsed">X-ray</span>
 					</a>
-					<!-- Submenu content -->
-					<div id='submenu3' class="collapse sidebar-submenu">
-						<a href="#" class="list-group-item list-group-item-action bg-dark text-white">
-							<span class="menu-collapsed">PT Notes</span>
-						</a>
-						<a href="#" class="list-group-item list-group-item-action bg-dark text-white">
-							<span class="menu-collapsed">Discharge Notes</span>
-						</a>
-						<a href="#" class="list-group-item list-group-item-action bg-dark text-white">
-							<span class="menu-collapsed">PRO</span>
-						</a>
+					<a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+						<span class="menu-collapsed">MRI</span>
+					</a>
+					<a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+						<span class="menu-collapsed">CT Scan</span>
+					</a>
+					<a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+						<span class="menu-collapsed">CBC</span>
+					</a>
+				</div>
+				<a href="#submenu3" data-toggle="collapse" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+					<div class="d-flex w-100 justify-content-start align-items-center">
+						<span class="fa fa-user fa-fw mr-3"></span>
+						<span class="menu-collapsed">Notes</span>
+						<span class="submenu-icon ml-auto"></span>
 					</div>
-				</ul><!-- List Group END-->
-			</div><!-- sidebar-container END -->
-		</div><!-- body-row END -->
+				</a>
+				<!-- Submenu content -->
+				<div id='submenu3' class="collapse sidebar-submenu">
+					<a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+						<span class="menu-collapsed">PT Notes</span>
+					</a>
+					<a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+						<span class="menu-collapsed">Discharge Notes</span>
+					</a>
+					<a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+						<span class="menu-collapsed">PRO</span>
+					</a>
+				</div>
+			</ul><!-- List Group END-->
+		</div>
+		<div class="case-information">
+			Patient ID: ${localStorage.getItem("caseNumber")}
+			<br/>Name of PT: ${localStorage.getItem("caseNumber")}
+			<br/>Status: ${localStorage.getItem("caseNumber")}
+		</div>
     </div>
 `
+
+document.querySelector('#profile-container').click();
+checkCase(document.querySelector('#form1'));
