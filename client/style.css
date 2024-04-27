@@ -52,12 +52,13 @@
 .case-information {
 	margin-left: 1%;
 	padding-top: 7%;
+	width: 100%
 }
 
 .personal-info {
 	display: flex;
-	width: 100vh;
-	justify-content: space-between;
+	width: 100%;
+	justify-content: space-evenly;
 	padding: 2%;
 	border-bottom: 1px solid #eee;
 }
@@ -108,6 +109,20 @@ th, td {
 
 .history {
 	padding: 2%
+}
+
+.form-container {
+	display: flex;
+	flex-direction: row;
+	background-color: #f2f2f2;
+	border: 1px solid black;
+	width: 100%;
+	padding: 1%;
+	justify-content: space-evenly;
+}
+
+#drpdwn-form, #notes-form {
+	width: 40%;
 }
 
 /* Bootstrap */

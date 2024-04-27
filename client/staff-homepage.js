@@ -13,6 +13,8 @@ let jsonRes = await fetch('http://localhost:8080/user', {
           })
           .catch(err => console.error(err));
 
+var imgSrc = "public/" + jsonRes.pictureName;
+
 document.querySelector('#app').innerHTML = `
     <div class="page-header">
     <div id="page-logo">
@@ -24,7 +26,7 @@ document.querySelector('#app').innerHTML = `
         ${jsonRes.caseNumber}
     </div>
     <div id="person-pic">
-        <img src="public/picture-sample.jpg" alt="logo" width="150" height="100">
+        <img src=${imgSrc} alt="logo" width="150" height="100">
     </div>
     </div>
     <div class="menu-settings">

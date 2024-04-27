@@ -18,7 +18,7 @@ export function checkCase(element) {
 	if (patientCase != "No result") {
 		localStorage.setItem("caseNumber", element.value);
 		
-		if (window.location == "http://localhost:5173/staff-homepage.html") {
+		if (window.location.pathname == "/staff-homepage.html") {
 			window.location.replace("patient-information/general-info.html");
 		} else {
 			window.location.replace("general-info.html");

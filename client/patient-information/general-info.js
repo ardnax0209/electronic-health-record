@@ -13,6 +13,8 @@ let jsonRes = await fetch('http://localhost:8080/user', {
           })
           .catch(err => console.error(err));
 
+var imgSrc = "../public/" + jsonRes.pictureName;
+
 document.querySelector('#app').innerHTML = `
     <div class="page-header">
         <div id="page-logo">
@@ -24,7 +26,7 @@ document.querySelector('#app').innerHTML = `
             ${jsonRes.caseNumber}
         </div>
         <div id="person-pic">
-            <img src="../public/picture-sample.jpg" alt="logo" width="150" height="100">
+            <img src=${imgSrc} alt="logo" width="150" height="100">
         </div>
     </div>
     <div class="main-content">
@@ -131,7 +133,18 @@ document.querySelector('#app').innerHTML = `
 			<div class="history-details">
 				&nbsp;&nbsp;&nbsp;
 				Referred from:
-				
+				<br/><br/>
+				<div class="form-container">
+					<label for="exampleFormControlSelect1">REFER TO:</label>
+					<select class="form-control" id="drpdwn-form">
+						<option>Cardio</option>
+						<option>Pulmonary</option>
+						<option>Neuro</option>
+						<option>Musculoskeletal</option>
+					</select>
+					<label for="exampleFormControlInput1">NOTES:</label>
+					<input type="text" class="form-control" id="notes-form" placeholder="Reason">
+				</div>
 			</div>
 		  </div>
 		</div>
