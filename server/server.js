@@ -168,7 +168,7 @@ app.get('/patient', function (req, res, next) {
 
 app.get('/file', function (req, res, next) {
   fileName = req.get('fileName');
-  const path = 'server/pdf/';
+  const path = 'client/public/';
   let existsFlag = false;
 
   var files = fs.readdirSync(path);

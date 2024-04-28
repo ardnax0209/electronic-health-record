@@ -1,5 +1,3 @@
-import { checkCase } from '../chckCaseNumber.js';
-
 let jsonRes = await fetch('http://localhost:8080/user', {
           method: 'GET',
           headers: {
@@ -14,6 +12,8 @@ let jsonRes = await fetch('http://localhost:8080/user', {
           .catch(err => console.error(err));
 
 var imgSrc = "../public/" + jsonRes.pictureName;
+var fName = localStorage.getItem("caseNumber") + "-xray.pdf";
+var pdfPath = "../public/" + fName;
 
 document.querySelector('#app').innerHTML = `
     <div class="page-header">
@@ -107,20 +107,30 @@ document.querySelector('#app').innerHTML = `
 		<div class="case-information">
 		  <div class="icon-container">
             <div class="exists-cntnr">
-                <img src="../public/pdf-icon.svg" alt="logo" width="100" height="96">
-                <p style="text-align:center;">X-Ray.pdf</p>
+		  		<a class="display-pdf">
+				  <img src="../public/pdf-icon.svg" title="Download file" width="90" height="86">
+				  <p style="text-align:center;">X-Ray.pdf</p>
+				</a>
             </div>
             <div class="does-not-exist">
-                TEST
+				<a class="upload-file">
+		  			<img src="../public/clipboard-plus-fill.svg" title="Upload file" width="90" height="86">
+				</a>
             </div>
           </div>
+		  <div class="pdf-container" style="display:none;">
+			<object
+				data=${pdfPath}
+				type="application/pdf"
+				width="100%"
+				height="450px"
+			>Go back to homepage.</object>
+		  </div>
 		</div>
     </div>
 `
 
-checkCase(document.querySelector('#form1'));
-
-var fName = localStorage.getItem("caseNumber") + "-xray.pdf";
+document.querySelector('.exists-cntnr').style.display = "none";
 
 let fsResponse = await fetch('http://localhost:8080/file', {
           method: 'GET',
@@ -135,6 +145,14 @@ let fsResponse = await fetch('http://localhost:8080/file', {
           })
           .catch(err => console.error(err));
           
-if (fsResponse == "Does not exist") {
-    //No file
+if (fsResponse != "Does not exist") {
+    document.querySelector('.exists-cntnr').style.display = "block";
 }
+
+;
+
+document.querySelector('.display-pdf').addEventListener('click', function () {
+	document.querySelector('.exists-cntnr').style.display = "none";
+	document.querySelector('.does-not-exist').style.display = "none";
+	document.querySelector('.pdf-container').style.display = "block";
+});
