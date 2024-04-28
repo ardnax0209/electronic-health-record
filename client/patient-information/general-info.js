@@ -15,6 +15,19 @@ let jsonRes = await fetch('http://localhost:8080/user', {
 
 var imgSrc = "../public/" + jsonRes.pictureName;
 
+let patientJson = await fetch('http://localhost:8080/patient', {
+	method: 'GET',
+	headers: {
+		'Content-Type': 'text/plain',
+		'caseID': localStorage.getItem("caseNumber"),
+	},
+})
+	.then(response => response.json())
+	.then(response => {
+	  return response;
+	})
+	.catch(err => console.error(err));
+
 document.querySelector('#app').innerHTML = `
     <div class="page-header">
         <div id="page-logo">
@@ -107,16 +120,16 @@ document.querySelector('#app').innerHTML = `
 		<div class="case-information">
 		  <div class="personal-info">
 		  	<div class="first-column">
-			  Name: Alexandra Aracelli Chato Manuud
-			  <br/>Patient ID: ${localStorage.getItem("caseNumber")}
-			  <br/>Contact E-mail:
-			  <br/>Contact Number:
+			  Name: ${patientJson.name}
+			  <br/>Patient ID: ${patientJson.patientId}
+			  <br/>Contact E-mail: ${patientJson.email}
+			  <br/>Contact Number: ${patientJson.phone}
 			</div>
 			<div class="second-column">
-				Diagnosis: 
-				<br/>DOB: 
-				<br/>Sex: ${localStorage.getItem("caseNumber")}
-				<br/>HMO: ${localStorage.getItem("caseNumber")}  
+				Diagnosis: ${patientJson.diagnosis}
+				<br/>DOB: ${patientJson.bday}
+				<br/>Sex: ${patientJson.sex}
+				<br/>HMO: ${patientJson.hmo}
 			</div>	
 		  </div>
 		  <div class="status-information">

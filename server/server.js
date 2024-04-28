@@ -123,6 +123,47 @@ app.get('/caseNumber', function (req, res, next) {
 	  console.log('Close the database connection.');
 	});
 })
+
+app.get('/patient', function (req, res, next) {
+  caseNum = req.get('caseID');
+  const path = "server/db/chinese-general-hospital-db.db";
+
+  // open the database
+	let db = new sqlite3.Database(path, sqlite3.OPEN_READWRITE, (err) => {
+	  if (err) {
+		console.error(err.message);
+	  } else {
+		console.log("Connected to the database.");
+		db.all(`
+		SELECT patientInformation.patientId AS ID, patientInformation.name AS patientName, patientInformation.email AS patientEmail, patientInformation.phone AS patientNum, patientInformation.birthday AS patientBday, patientInformation.sex AS gender, patientInformation.hmo AS patientHMO, caseInformation.diagnosis AS diagnosis FROM patientInformation INNER JOIN caseInformation ON caseInformation.patientId=patientInformation.patientId WHERE caseInformation.caseNumber = ${caseNum}`, (err, rows) => {
+			try {
+			  rows.forEach(rows => {
+				res.json({
+					patientId: rows.ID,
+          name: rows.patientName,
+          email: rows.patientEmail,
+          phone: rows.patientNum,
+          bday: rows.patientBday,
+          sex: rows.gender,
+          hmo: rows.patientHMO,
+          diagnosis: rows.diagnosis
+				  });
+			});
+			} catch (e) {
+			  res.json("No result");
+			}
+			
+		});
+	  }
+	});
+
+	db.close((err) => {
+	  if (err) {
+		console.error(err.message);
+	  }
+	  console.log('Close the database connection.');
+	});
+})
  
 app.listen(PORT, function () {
   console.log('CORS-enabled web server listening on port ' + PORT)
