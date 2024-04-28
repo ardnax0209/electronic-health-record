@@ -1,7 +1,8 @@
 var express = require('express')
-var cors = require('cors')
 var app = express()
+var cors = require('cors')
 const sqlite3 = require('sqlite3').verbose();
+const fs = require('node:fs');
 
 var db;
 var uName;
@@ -18,32 +19,32 @@ app.get('/login', function (req, res, next) {
   const path = "server/db/chinese-general-hospital-db.db";
 
   // open the database
-let db = new sqlite3.Database(path, sqlite3.OPEN_READWRITE, (err) => {
-  if (err) {
-    console.error(err.message);
-  } else {
-    console.log("Connected to the database.");
-    db.all(`
-    SELECT username FROM loginInformation
-    WHERE username = ${uName} AND password = ${pWord}`, (err, rows) => {
-        try {
-          rows.forEach(rows => {
-            res.json(rows.username);
-        });
-        } catch (e) {
-          res.json("Employee ID or password is incorrect");
-        }
-        
-    });
-  }
-});
+  let db = new sqlite3.Database(path, sqlite3.OPEN_READWRITE, (err) => {
+    if (err) {
+      console.error(err.message);
+    } else {
+      console.log("Connected to the database.");
+      db.all(`
+      SELECT username FROM loginInformation
+      WHERE username = ${uName} AND password = ${pWord}`, (err, rows) => {
+          try {
+            rows.forEach(rows => {
+              res.json(rows.username);
+          });
+          } catch (e) {
+            res.json("Employee ID or password is incorrect");
+          }
+          
+      });
+    }
+  });
 
-db.close((err) => {
-  if (err) {
-    console.error(err.message);
-  }
-  console.log('Close the database connection.');
-});
+  db.close((err) => {
+    if (err) {
+      console.error(err.message);
+    }
+    console.log('Close the database connection.');
+  });
 })
 
 app.get('/version', function (req, res, next) {
@@ -163,6 +164,27 @@ app.get('/patient', function (req, res, next) {
 	  }
 	  console.log('Close the database connection.');
 	});
+})
+
+app.get('/file', function (req, res, next) {
+  fileName = req.get('fileName');
+  const path = 'server/pdf/';
+  let existsFlag = false;
+
+  var files = fs.readdirSync(path);
+
+  //console.log("\nCurrent directory filenames:"); 
+  files.forEach(file => { 
+    if (fileName == file) {
+      existsFlag = true;
+    }
+  }); 
+
+  if (existsFlag == true) {
+    res.json(fileName);
+  } else {
+    res.json("Does not exist");
+  }
 })
  
 app.listen(PORT, function () {

@@ -15,19 +15,6 @@ let jsonRes = await fetch('http://localhost:8080/user', {
 
 var imgSrc = "../public/" + jsonRes.pictureName;
 
-let patientJson = await fetch('http://localhost:8080/patient', {
-	method: 'GET',
-	headers: {
-		'Content-Type': 'text/plain',
-		'caseID': localStorage.getItem("caseNumber"),
-	},
-})
-	.then(response => response.json())
-	.then(response => {
-	  return response;
-	})
-	.catch(err => console.error(err));
-
 document.querySelector('#app').innerHTML = `
     <div class="page-header">
         <div id="page-logo">
@@ -118,136 +105,36 @@ document.querySelector('#app').innerHTML = `
 			</div>
 		</div>
 		<div class="case-information">
-		  <div class="personal-info">
-		  	<div class="first-column">
-			  Name: ${patientJson.name}
-			  <br/>Patient ID: ${patientJson.patientId}
-			  <br/>Contact E-mail: ${patientJson.email}
-			  <br/>Contact Number: ${patientJson.phone}
-			</div>
-			<div class="second-column">
-				Diagnosis: ${patientJson.diagnosis}
-				<br/>DOB: ${patientJson.bday}
-				<br/>Sex: ${patientJson.sex}
-				<br/>HMO: ${patientJson.hmo}
-			</div>	
-		  </div>
-		  <div class="status-information">
-		  	Status
-			<br/>
-			<div class="container">
-				<table id="myTable">
-					
-				</table>
-			</div>
-		  </div>
-		  <div class="history">
-		  	History
-			<div class="history-details">
-				&nbsp;&nbsp;&nbsp;
-				Referred from:
-				<br/><br/>
-				<div class="form-container">
-					<label for="exampleFormControlSelect1">REFER TO:</label>
-					<select class="form-control" id="drpdwn-form">
-						<option>Cardio</option>
-						<option>Pulmonary</option>
-						<option>Neuro</option>
-						<option>Musculoskeletal</option>
-					</select>
-					<label for="exampleFormControlInput1">NOTES:</label>
-					<input type="text" class="form-control" id="notes-form" placeholder="Reason">
-				</div>
-			</div>
-		  </div>
+		  <div class="icon-container">
+            <div class="exists-cntnr">
+                <img src="../public/pdf-icon.svg" alt="logo" width="100" height="96">
+                <p style="text-align:center;">X-Ray.pdf</p>
+            </div>
+            <div class="does-not-exist">
+                TEST
+            </div>
+          </div>
 		</div>
     </div>
 `
 
-document.querySelector('#profile-container').click();
 checkCase(document.querySelector('#form1'));
-createTable();
 
-function createTable() {
-	var table = document.getElementById("myTable");
-    //var columnsInput = document.getElementById("columns");
-    //var rowsInput = document.getElementById("rows");
-    //var rows = parseInt(rowsInput.value);
-	var columns = 3;
-    var rows = 2;
+var fName = localStorage.getItem("caseNumber") + "-xray.pdf";
 
-	var tableData = [
-		{
-			"colName": "Action"
-		},
-		{
-			"colName": "Date"
-		},
-		{
-			"colName": "Dept. Provider"
-		}
-	];
-
-      // Clear existing table
-    while (table.firstChild) {
-        table.removeChild(table.firstChild);
-    }
-
-    // Create table header
-    var headerRow = document.createElement("tr");
-    for (var i = 0; i < columns; i++) {
-        var th = document.createElement("th");
-        var input = document.createElement("input");
-        input.setAttribute("type", "text");
-        input.setAttribute("class", "header-input");
-        //input.setAttribute("placeholder", "Column " + (i + 1));
-		input.setAttribute("placeholder", tableData[i].colName);
-		input.readOnly = true;
-        th.appendChild(input);
-        headerRow.appendChild(th);
-    }
-    table.appendChild(headerRow);
-
-    // Create table rows
-    for (var i = 0; i < rows; i++) {
-        var rowData = [
-			{
-				"data": "Referral"
-			},
-			{
-				"data": "04/14/2024"
-			},
-			{
-				"data": "Cardiac Department"
-			}
-		];
-        var row = document.createElement("tr");
-        for (var j = 0; j < columns; j++) {
-          var cell = document.createElement("td");
-          cell.setAttribute("contenteditable", "true");
-          cell.setAttribute("class", "editable-cell");
-		  cell.setAttribute("contenteditable", "false");
-          cell.addEventListener("input", updateCell);
-          //rowData.push("");
-		  if (i == 0) {
-			cell.innerHTML = rowData[j].data;
-		  } else {
-			cell.innerHTML = `&nbsp;`;
-		  }
-          row.appendChild(cell);
-        }
-        table.appendChild(row);
-        //tableData.push(rowData);
-    }
-}
-
-function updateCell(event) {
-	var rowIndex = event.target.parentNode.rowIndex - 1;
-	var columnIndex = event.target.cellIndex;
-	var value = event.target.textContent.trim();
-	updateData(rowIndex, columnIndex, value);
-}
-
-function updateData(row, col, value) {
-	tableData[row][col] = value;
+let fsResponse = await fetch('http://localhost:8080/file', {
+          method: 'GET',
+          headers: {
+              'Content-Type': 'text/plain',
+              'fileName': fName,
+          },
+      })
+          .then(response => response.json())
+          .then(response => {
+            return response;
+          })
+          .catch(err => console.error(err));
+          
+if (fsResponse == "Does not exist") {
+    //No file
 }
