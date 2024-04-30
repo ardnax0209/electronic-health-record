@@ -85,13 +85,13 @@ document.querySelector('#app').innerHTML = `
 						<a href="xray-page.html" class="list-group-item list-group-item-action bg-dark text-white">
 							<span class="menu-collapsed">X-ray</span>
 						</a>
-						<a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+						<a href="mri-page.html" class="list-group-item list-group-item-action bg-dark text-white">
 							<span class="menu-collapsed">MRI</span>
 						</a>
-						<a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+						<a href="ctscan-page.html" class="list-group-item list-group-item-action bg-dark text-white">
 							<span class="menu-collapsed">CT Scan</span>
 						</a>
-						<a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+						<a href="cbc-page.html" class="list-group-item list-group-item-action bg-dark text-white">
 							<span class="menu-collapsed">CBC</span>
 						</a>
 					</div>
@@ -104,13 +104,13 @@ document.querySelector('#app').innerHTML = `
 					</a>
 					<!-- Submenu content -->
 					<div id='submenu3' class="collapse sidebar-submenu">
-						<a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+						<a href="ptnotes-page.html" class="list-group-item list-group-item-action bg-dark text-white">
 							<span class="menu-collapsed">PT Notes</span>
 						</a>
-						<a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+						<a href="discharge-page.html" class="list-group-item list-group-item-action bg-dark text-white">
 							<span class="menu-collapsed">Discharge Notes</span>
 						</a>
-						<a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+						<a href="pro-page.html" class="list-group-item list-group-item-action bg-dark text-white">
 							<span class="menu-collapsed">PRO</span>
 						</a>
 					</div>

@@ -60,7 +60,7 @@ document.querySelector('#app').innerHTML = `
 							<span class="menu-collapsed">General Information</span>
 						</a>
 					</div>
-					<a href="#submenu2" data-toggle="collapse" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+					<a href="#submenu2" data-toggle="collapse" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start" id="diag-container">
 						<div class="d-flex w-100 justify-content-start align-items-center">
 							<span class="fa fa-user fa-fw mr-3"></span>
 							<span class="menu-collapsed">Diagnostic Findings</span>
@@ -72,13 +72,13 @@ document.querySelector('#app').innerHTML = `
 						<a href="xray-page.html" class="list-group-item list-group-item-action bg-dark text-white">
 							<span class="menu-collapsed">X-ray</span>
 						</a>
-						<a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+						<a href="mri-page.html" class="list-group-item list-group-item-action bg-dark text-white">
 							<span class="menu-collapsed">MRI</span>
 						</a>
-						<a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+						<a href="ctscan-page.html" class="list-group-item list-group-item-action bg-dark text-white">
 							<span class="menu-collapsed">CT Scan</span>
 						</a>
-						<a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+						<a href="cbc-page.html" class="list-group-item list-group-item-action bg-dark text-white">
 							<span class="menu-collapsed">CBC</span>
 						</a>
 					</div>
@@ -91,13 +91,13 @@ document.querySelector('#app').innerHTML = `
 					</a>
 					<!-- Submenu content -->
 					<div id='submenu3' class="collapse sidebar-submenu">
-						<a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+						<a href="ptnotes-page.html" class="list-group-item list-group-item-action bg-dark text-white">
 							<span class="menu-collapsed">PT Notes</span>
 						</a>
-						<a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+						<a href="discharge-page.html" class="list-group-item list-group-item-action bg-dark text-white">
 							<span class="menu-collapsed">Discharge Notes</span>
 						</a>
-						<a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+						<a href="pro-page.html" class="list-group-item list-group-item-action bg-dark text-white">
 							<span class="menu-collapsed">PRO</span>
 						</a>
 					</div>
@@ -136,6 +136,7 @@ document.querySelector('#app').innerHTML = `
 `
 
 document.querySelector('.exists-cntnr').style.display = "none";
+document.querySelector('#diag-container').click();
 
 let fsResponse = await fetch('http://localhost:8080/checkFile', {
           method: 'GET',
