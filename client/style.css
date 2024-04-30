@@ -135,6 +135,10 @@ th, td {
 	margin-right: 30%;
 }
 
+#file-input {
+	display: none;
+}
+
 /* Bootstrap */
 #form-outline-id {
 	margin-bottom: 25%;

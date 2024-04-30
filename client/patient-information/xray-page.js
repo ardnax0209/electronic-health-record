@@ -113,9 +113,14 @@ document.querySelector('#app').innerHTML = `
 				</a>
             </div>
             <div class="does-not-exist">
-				<a class="upload-file">
-		  			<img src="../public/clipboard-plus-fill.svg" title="Upload file" width="90" height="86">
-				</a>
+				<div class="upload-file">
+					<form id="formElem" method="POST" enctype="multipart/form-data" >
+						<label for="file-input">
+							<img src="../public/clipboard-plus-fill.svg" title="Upload file" width="90" height="86">
+						</label>
+						<input id="file-input" type="file" name="xrayfile"/>
+					</form>
+				</div>
             </div>
           </div>
 		  <div class="pdf-container" style="display:none;">
@@ -132,7 +137,7 @@ document.querySelector('#app').innerHTML = `
 
 document.querySelector('.exists-cntnr').style.display = "none";
 
-let fsResponse = await fetch('http://localhost:8080/file', {
+let fsResponse = await fetch('http://localhost:8080/checkFile', {
           method: 'GET',
           headers: {
               'Content-Type': 'text/plain',
@@ -156,3 +161,33 @@ document.querySelector('.display-pdf').addEventListener('click', function () {
 	document.querySelector('.does-not-exist').style.display = "none";
 	document.querySelector('.pdf-container').style.display = "block";
 });
+
+document.querySelector('.upload-file').onchange = async function () {
+	/*
+	var formData = new FormData();
+
+	let fileData = document.getElementById('file-input').files[0];
+	formData.append("file", fileData, {filename: fileData.name, knownLength: fileData.size});
+	formData.append('name', fileData.name);
+	formData.append('hash', fileData.hash);
+	formData.append('mime', fileData.mime);
+	*/
+
+	var formData = new FormData(formElem);
+
+	var content = "multipart/form-data; boundary=" + formData.boundary;
+	
+	let fsResponse = await fetch('http://localhost:8080/uploadFile', {
+		method: 'POST',
+		body: formData,
+		headers: {
+			'fileName': fName,
+		}
+	})
+		.then(response => response.json())
+		.then(response => {
+		  console.log(response);
+		  location.reload();
+		})
+		.catch(err => console.error(err));
+};
