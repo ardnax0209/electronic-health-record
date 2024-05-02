@@ -97,10 +97,10 @@ document.querySelector('#app').innerHTML = `
                 <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2z"/>
             </svg> &nbsp; &nbsp;
             <select class="form-control" id="exampleFormControlSelect1">
+                <option>Date</option>
                 <option>Case No</option>
                 <option>Name</option>
                 <option>Status</option>
-                <option>PT in Charge</option>
             </select>
         </div>
     </div>
@@ -113,7 +113,7 @@ document.querySelector('#exampleFormControlSelect1').onchange = async function (
 };
 
 async function populateTbl () {
-    let patientJson = await fetch('http://localhost:8080/allCaseNumber', {
+    let patientJson = await fetch('http://localhost:8080/getReferral', {
         method: 'GET',
         headers: {
             'Content-Type': 'text/plain',
@@ -136,7 +136,10 @@ async function populateTbl () {
 			"colName": "Name"
 		},
 		{
-			"colName": "PT in Charge"
+			"colName": "Referral Doctor"
+		},
+        {
+			"colName": "Date of Referral"
 		},
 		{
 			"colName": "Status"
@@ -150,7 +153,7 @@ async function populateTbl () {
 
     //Create table headers
     var headerRow = document.createElement("tr");
-    for (var i = 0; i < 4; i++) {
+    for (var i = 0; i < 5; i++) {
         var th = document.createElement("th");
         var input = document.createElement("input");
         input.setAttribute("type", "text");
@@ -165,7 +168,7 @@ async function populateTbl () {
           // Create table rows
           for (var i = 0; i < Object.keys(patientJson).length; i++) {
               var row = document.createElement("tr");
-              for (var j = 0; j < 4; j++) {
+              for (var j = 0; j < 5; j++) {
                 var cell = document.createElement("td");
                 cell.setAttribute("class", "editable-cell");
                 cell.setAttribute("contenteditable", "false");
@@ -175,7 +178,9 @@ async function populateTbl () {
                 } else if (j == 1) {
                   cell.innerHTML = patientJson[i].patient;
                 } else if (j == 2) {
-                  cell.innerHTML = patientJson[i].nameOfPt;
+                  cell.innerHTML = patientJson[i].referralDoctor;
+                } else if (j == 3) {
+                  cell.innerHTML = patientJson[i].referralDate;
                 } else {
                   cell.innerHTML = patientJson[i].status;
                 }

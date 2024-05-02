@@ -259,6 +259,131 @@ app.post('/uploadFile', function (req, res) {
     });
   });
 })
+
+app.get('/getReferral', function (req, res) {
+  sortOpt = req.get('sort-option');
+  
+  const path = "server/db/chinese-general-hospital-db.db";
+  var queryStatement;
+  var resData = [];
+
+  if (sortOpt == "Case No") {
+    queryStatement = "SELECT caseInformation.caseNumber AS caseNum, patientInformation.name AS patientName, caseInformation.referralDoctor AS doctor, caseInformation.referralDate AS date, caseInformation.status AS caseStatus FROM caseInformation INNER JOIN patientInformation ON caseInformation.patientId=patientInformation.patientId WHERE caseInformation.referralDate IS NOT NULL ORDER BY caseInformation.caseNumber ASC";
+  } else if (sortOpt == "Name") {
+    queryStatement = "SELECT caseInformation.caseNumber AS caseNum, patientInformation.name AS patientName, caseInformation.referralDoctor AS doctor, caseInformation.referralDate AS date, caseInformation.status AS caseStatus FROM caseInformation INNER JOIN patientInformation ON caseInformation.patientId=patientInformation.patientId WHERE caseInformation.referralDate IS NOT NULL ORDER BY patientInformation.name ASC";
+  } else if (sortOpt == "Status") {
+    queryStatement = "SELECT caseInformation.caseNumber AS caseNum, patientInformation.name AS patientName, caseInformation.referralDoctor AS doctor, caseInformation.referralDate AS date, caseInformation.status AS caseStatus FROM caseInformation INNER JOIN patientInformation ON caseInformation.patientId=patientInformation.patientId WHERE caseInformation.referralDate IS NOT NULL ORDER BY caseInformation.status ASC";
+  } else {
+    queryStatement = "SELECT caseInformation.caseNumber AS caseNum, patientInformation.name AS patientName, caseInformation.referralDoctor AS doctor, caseInformation.referralDate AS date, caseInformation.status AS caseStatus FROM caseInformation INNER JOIN patientInformation ON caseInformation.patientId=patientInformation.patientId WHERE caseInformation.referralDate IS NOT NULL ORDER BY caseInformation.referralDate ASC";
+  }
+
+  // open the database
+	let db = new sqlite3.Database(path, sqlite3.OPEN_READWRITE, (err) => {
+	  if (err) {
+		console.error(err.message);
+	  } else {
+		db.all(queryStatement, (err, rows) => {
+			try {
+			  rows.forEach(rows => {
+          resData.push({
+            caseNumber: rows.caseNum,
+            patient: rows.patientName,
+	  				referralDoctor: rows.doctor,
+            referralDate: rows.date,
+		  			status: rows.caseStatus
+          });
+			});
+      res.json(resData);
+			} catch (e) {
+			  res.json("No result");
+			}
+			
+		});
+	  }
+	});
+
+	db.close((err) => {
+	  if (err) {
+		console.error(err.message);
+	  }
+	});
+})
+
+app.post('/populateTbl', function (req, res) {
+  monthVal = req.get('Month');
+  const path = "server/db/chinese-general-hospital-db.db";
+
+  var resData = [];
+  var monthData = '01';
+
+  // open the database
+  let db = new sqlite3.Database(path, sqlite3.OPEN_READWRITE, (err) => {
+    if (err) {
+      console.error(err.message);
+    } else { //update
+      switch(monthVal) {
+        case 'February':
+          monthData = '02';
+          break;
+        case 'March':
+          monthData = '03';
+          break;
+        case 'April':
+          monthData = '04';
+          break;
+        case 'May':
+          monthData = '05';
+          break;
+        case 'June':
+          monthData = '06';
+          break;
+        case 'July':
+          monthData = '07';
+          break;
+        case 'August':
+          monthData = '08';
+          break;
+        case 'September':
+          monthData = '09';
+          break;
+        case 'October':
+          monthData = '10';
+          break;
+        case 'November':
+          monthData = '11';
+          break;
+        case 'December':
+          monthData = '12';
+          break;
+        default:
+          break;
+      }
+      
+      db.all(`
+      SELECT diagnosis, referralDate FROM caseInformation`, (err, rows) => {
+          try {
+            rows.forEach(rows => {
+              if (monthData == rows.referralDate.substring(0, 2)) {
+                resData.push({
+                  diagnosis: rows.diagnosis
+                });
+              }
+          });
+          res.json(resData);
+          } catch (e) {
+            res.json("Error. Go back to homepage.");
+          }
+          
+      });
+    }
+  });
+
+  db.close((err) => {
+    if (err) {
+      console.error(err.message);
+    }
+  });
+})
  
 app.listen(PORT, function () {
   console.log('CORS-enabled web server listening on port ' + PORT)
