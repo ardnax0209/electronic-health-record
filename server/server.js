@@ -26,14 +26,19 @@ app.get('/login', function (req, res) {
       console.error(err.message);
     } else {
       db.all(`
-      SELECT username FROM loginInformation
+      SELECT username, type FROM loginInformation
       WHERE username = ${uName} AND password = ${pWord}`, (err, rows) => {
           try {
             rows.forEach(rows => {
-              res.json(rows.username);
+              res.json({
+                username: rows.username,
+                type: rows.type
+              });
           });
           } catch (e) {
-            res.json("Employee ID or password is incorrect");
+            res.json({
+              username: "Employee ID or password is incorrect"
+            });
           }
           
       });

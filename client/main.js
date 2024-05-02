@@ -2,15 +2,6 @@ import './style.css';
 import { checkCredentials } from './login.js';
 import logoName from '/logo-with-name.png';
 
-
-/*
-fetch('./package.json')
-    .then((response) => response.json())
-    .then((data) => {
-		console.log(data.version);
-	});
-	*/
-
 let verNum = await fetch('http://localhost:8080/version', {
 		method: 'GET',
 	})

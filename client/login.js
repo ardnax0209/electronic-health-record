@@ -17,12 +17,17 @@ export function checkCredentials(element) {
 
   });
 
-  function transferPage(user) {
-	if (user != "Employee ID or password is incorrect") {
-		localStorage.setItem("username", btoa(user));
-		window.location.replace("staff-homepage.html");
+  function transferPage(resBody) {
+	if (resBody.username != "Employee ID or password is incorrect") {
+		localStorage.setItem("username", btoa(resBody.username));
+
+		if (resBody.type == "staff") {
+			window.location.replace("staff-homepage.html");
+		} else {
+			window.location.replace("admin-homepage.html");
+		}
 	} else {
-		alert(user);
+		alert(resBody.username);
 		document.getElementById('employeeId').value = "";
 		document.getElementById('employeePass').value = "";
 	}
