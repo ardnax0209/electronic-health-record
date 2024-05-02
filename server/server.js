@@ -126,6 +126,54 @@ app.get('/caseNumber', function (req, res) {
 	});
 })
 
+app.get('/allCaseNumber', function (req, res) {
+  sortOpt = req.get('sort-option');
+  
+  const path = "server/db/chinese-general-hospital-db.db";
+  var queryStatement;
+  var resData = [];
+
+  if (sortOpt == "Case No") {
+    queryStatement = "SELECT caseInformation.caseNumber AS caseNum, patientInformation.name AS patientName, caseInformation.nameOfPt AS ptName, caseInformation.status AS caseStatus FROM caseInformation INNER JOIN patientInformation ON caseInformation.patientId=patientInformation.patientId ORDER BY caseInformation.caseNumber ASC";
+  } else if (sortOpt == "Name") {
+    queryStatement = "SELECT caseInformation.caseNumber AS caseNum, patientInformation.name AS patientName, caseInformation.nameOfPt AS ptName, caseInformation.status AS caseStatus FROM caseInformation INNER JOIN patientInformation ON caseInformation.patientId=patientInformation.patientId ORDER BY patientInformation.name ASC";
+  } else if (sortOpt == "Status") {
+    queryStatement = "SELECT caseInformation.caseNumber AS caseNum, patientInformation.name AS patientName, caseInformation.nameOfPt AS ptName, caseInformation.status AS caseStatus FROM caseInformation INNER JOIN patientInformation ON caseInformation.patientId=patientInformation.patientId ORDER BY caseInformation.status ASC";
+  } else {
+    queryStatement = "SELECT caseInformation.caseNumber AS caseNum, patientInformation.name AS patientName, caseInformation.nameOfPt AS ptName, caseInformation.status AS caseStatus FROM caseInformation INNER JOIN patientInformation ON caseInformation.patientId=patientInformation.patientId ORDER BY caseInformation.nameOfPt ASC";
+  }
+
+  // open the database
+	let db = new sqlite3.Database(path, sqlite3.OPEN_READWRITE, (err) => {
+	  if (err) {
+		console.error(err.message);
+	  } else {
+		db.all(queryStatement, (err, rows) => {
+			try {
+			  rows.forEach(rows => {
+          resData.push({
+            caseNumber: rows.caseNum,
+            patient: rows.patientName,
+	  				nameOfPt: rows.ptName,
+		  			status: rows.caseStatus
+          });
+			});
+      res.json(resData);
+			} catch (e) {
+			  res.json("No result");
+			}
+			
+		});
+	  }
+	});
+
+	db.close((err) => {
+	  if (err) {
+		console.error(err.message);
+	  }
+	});
+})
+
 app.get('/patient', function (req, res) {
   caseNum = req.get('caseID');
   const path = "server/db/chinese-general-hospital-db.db";

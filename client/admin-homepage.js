@@ -1,5 +1,3 @@
-import { checkCase } from './chckCaseNumber.js';
-
 let jsonRes = await fetch('http://localhost:8080/user', {
           method: 'GET',
           headers: {
@@ -17,17 +15,17 @@ var imgSrc = "public/" + jsonRes.pictureName;
 
 document.querySelector('#app').innerHTML = `
     <div class="page-header">
-    <div id="page-logo">
-        <img src="public/logo-ehr.png" alt="logo" width="400" height="96">
-    </div>
-    <div id="person-info">
-        ${jsonRes.name}
-        <br/>
-        ${jsonRes.caseNumber}
-    </div>
-    <div id="person-pic">
-        <img src=${imgSrc} alt="logo" width="150" height="100">
-    </div>
+        <div id="page-logo">
+            <img src="public/logo-ehr.png" alt="logo" width="400" height="96">
+        </div>
+        <div id="person-info">
+            ${jsonRes.name}
+            <br/>
+            ${jsonRes.caseNumber}
+        </div>
+        <div id="person-pic">
+            <img src=${imgSrc} alt="logo" width="150" height="100">
+        </div>
     </div>
     <div class="menu-settings">
         <!-- Bootstrap row -->
@@ -86,6 +84,83 @@ document.querySelector('#app').innerHTML = `
             </button>
         </div>
     </div>
+    <div class="main-body">
+        <div class="table-container">
+            <table id="rehabTbl">
+            <tr>
+                <th>
+                    Case No.
+                </th>
+                <th>
+                    Name
+                </th>
+                <th>
+                    PT in Charge
+                </th>
+                <th>
+                    Status
+                </th>
+            </tr>
+            </table>
+        </div>
+        <div class="form-group">
+            <select class="form-control" id="exampleFormControlSelect1">
+                <option>Case No</option>
+                <option>Name</option>
+                <option>Status</option>
+                <option>PT in Charge</option>
+            </select>
+        </div>
+    </div>
 `
 
-checkCase(document.querySelector('#form1'));
+populateTbl();
+
+document.querySelector('#exampleFormControlSelect1').onchange = async function () {
+    populateTbl();
+};
+
+async function populateTbl () {
+    let patientJson = await fetch('http://localhost:8080/allCaseNumber', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'text/plain',
+            'sort-option': document.getElementById("exampleFormControlSelect1").value
+        }
+      })
+        .then(response => response.json())
+        .then(response => {
+          return response;
+        })
+        .catch(err => console.error(err));
+      
+      var table = document.getElementById("rehabTbl");
+
+    // Clear existing table
+    while (table.firstChild) {
+        table.removeChild(table.firstChild);
+    }
+      
+          // Create table rows
+          for (var i = 0; i < Object.keys(patientJson).length; i++) {
+              var row = document.createElement("tr");
+              for (var j = 0; j < 4; j++) {
+                var cell = document.createElement("td");
+                cell.setAttribute("class", "editable-cell");
+                cell.setAttribute("contenteditable", "false");
+                
+                if (j == 0) {
+                  cell.innerHTML = patientJson[i].caseNumber;
+                } else if (j == 1) {
+                  cell.innerHTML = patientJson[i].patient;
+                } else if (j == 2) {
+                  cell.innerHTML = patientJson[i].nameOfPt;
+                } else {
+                  cell.innerHTML = patientJson[i].status;
+                }
+      
+                row.appendChild(cell);
+              }
+              table.appendChild(row);
+          }
+}

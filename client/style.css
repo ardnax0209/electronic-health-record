@@ -52,7 +52,7 @@
 .case-information {
 	margin-left: 1%;
 	padding-top: 1%;
-	width: 100%
+	width: 100%;
 }
 
 .personal-info {
@@ -138,6 +138,42 @@ th, td {
 #file-input {
 	display: none;
 }
+
+/* Admin */
+
+.main-body {
+	width: 79vw;
+	right: 2px;
+	position: absolute;
+	top: 175px;
+}
+
+/* Start of table */
+
+.table-container {
+	width: 90%;
+	margin: 0 auto;
+	border: 1px solid black;
+}
+
+table {
+	border-collapse: collapse;
+	width: 100%;
+}
+  
+td {
+	border: none;
+	padding: 8px;
+	text-align: left;
+}
+
+th {
+ 	border: 1px solid black;
+	padding: 8px;
+	text-align: center;
+}
+
+/* End of table */
 
 /* Bootstrap */
 #form-outline-id {
