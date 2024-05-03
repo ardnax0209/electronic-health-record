@@ -54,7 +54,7 @@ document.querySelector('#app').innerHTML = `
                     <span class="submenu-icon ml-auto"></span>
                 </div>
             </a>
-            <a href="decking-page.html" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+            <a href="decking-page.html" data-toggle="collapse" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
                 <div class="d-flex w-100 justify-content-start align-items-center">
                     <span class="fa fa-user fa-fw mr-3"></span>
                     <span class="menu-collapsed">Decking / Scheduling</span>
@@ -62,7 +62,7 @@ document.querySelector('#app').innerHTML = `
                 </div>
             </a>
             <!-- Submenu content -->
-            <div id='submenu3' class="collapse sidebar-submenu">
+            <div id='submenu3'>
                 <a href="ptnotes-page.html" class="list-group-item list-group-item-action bg-dark text-white">
                     <span class="menu-collapsed">+ Add New</span>
                 </a>
@@ -87,103 +87,94 @@ document.querySelector('#app').innerHTML = `
         </div>
     </div>
     <div class="main-body">
-        <div class="table-container">
-            <table id="rehabTbl">
-            </table>
-        </div>
-        <div class="sort-container">
-            <p>Sort by</p> &nbsp;
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-funnel" viewBox="0 0 16 16">
-                <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2z"/>
-            </svg> &nbsp; &nbsp;
-            <select class="form-control" id="exampleFormControlSelect1">
-                <option>Case No</option>
-                <option>Name</option>
-                <option>Status</option>
-                <option>PT in Charge</option>
-            </select>
-        </div>
+          
     </div>
 `
 
-populateTbl();
+checkCase(document.querySelector('#form1'));
 
-document.querySelector('#exampleFormControlSelect1').onchange = async function () {
-    populateTbl();
+createTbl();
+
+document.querySelector('#diag-selection').onchange = async function () {
+    createTbl();
 };
 
-async function populateTbl () {
-    let patientJson = await fetch('http://localhost:8080/allCaseNumber', {
-        method: 'GET',
+document.querySelector('#month-selection').onchange = async function () {
+    createTbl();
+};
+
+async function createTbl() {
+    var diagnosisVal = document.getElementById("diag-selection").value;
+    var monthVal = document.getElementById("month-selection").value;
+    var labelCont = [];
+    var dataCont = [];
+    var labelContFinal = [];
+    var dataContFinal = [];
+
+    let resJson = await fetch('http://localhost:8080/populateTbl', {
+        method: 'POST',
         headers: {
             'Content-Type': 'text/plain',
-            'sort-option': document.getElementById("exampleFormControlSelect1").value
+            'Month': monthVal
         }
-      })
+    })
         .then(response => response.json())
         .then(response => {
           return response;
         })
         .catch(err => console.error(err));
-      
-      var table = document.getElementById("rehabTbl");
 
-    var headerData = [
-		{
-			"colName": "Case No."
-		},
-		{
-			"colName": "Name"
-		},
-		{
-			"colName": "PT in Charge"
-		},
-		{
-			"colName": "Status"
-		}
-	];
-
-    // Clear existing table
-    while (table.firstChild) {
-        table.removeChild(table.firstChild);
+    for (var i = 0; i < Object.keys(resJson).length; i++) {
+        if (diagnosisVal == "Cardio Cases") {
+            if (resJson[i].diagnosis == "Myocardial Infarction" || resJson[i].diagnosis == "CABG" || resJson[i].diagnosis == "CHF") {
+                labelCont.push(resJson[i].diagnosis);
+            }
+        } else if (diagnosisVal == "Pulmonary Cases") {
+            if (resJson[i].diagnosis == "COPD" || resJson[i].diagnosis == "Bronchitis" || resJson[i].diagnosis == "Emphysema") {
+                labelCont.push(resJson[i].diagnosis);
+            }
+        } else if (diagnosisVal == "Neuro Cases") {
+            if (resJson[i].diagnosis == "Stroke" || resJson[i].diagnosis == "Spinal Cord Injury" || resJson[i].diagnosis == "Multiple Sclerosis") {
+                labelCont.push(resJson[i].diagnosis);
+            }
+        } else {
+            if (resJson[i].diagnosis == "Lateral Epicondylitis" || resJson[i].diagnosis == "Ankle Sprain" || resJson[i].diagnosis == "Scoliosis") {
+                labelCont.push(resJson[i].diagnosis);
+            }
+        }
     }
 
-    //Create table headers
-    var headerRow = document.createElement("tr");
-    for (var i = 0; i < 4; i++) {
-        var th = document.createElement("th");
-        var input = document.createElement("input");
-        input.setAttribute("type", "text");
-        input.setAttribute("class", "header-input");
-		input.setAttribute("placeholder", headerData[i].colName);
-		input.readOnly = true;
-        th.appendChild(input);
-        headerRow.appendChild(th);
+    labelCont.forEach(function (x) { dataCont[x] = (dataCont[x] || 0) + 1; });
+
+    for (let i = 0; i < labelCont.length; i++) {
+      if (labelContFinal.indexOf(labelCont[i]) === -1) {
+         labelContFinal.push(labelCont[i]);
+      }
     }
-    table.appendChild(headerRow);
-      
-          // Create table rows
-          for (var i = 0; i < Object.keys(patientJson).length; i++) {
-              var row = document.createElement("tr");
-              for (var j = 0; j < 4; j++) {
-                var cell = document.createElement("td");
-                cell.setAttribute("class", "editable-cell");
-                cell.setAttribute("contenteditable", "false");
-                
-                if (j == 0) {
-                  cell.innerHTML = patientJson[i].caseNumber;
-                } else if (j == 1) {
-                  cell.innerHTML = patientJson[i].patient;
-                } else if (j == 2) {
-                  cell.innerHTML = patientJson[i].nameOfPt;
-                } else {
-                  cell.innerHTML = patientJson[i].status;
-                }
-      
-                row.appendChild(cell);
-              }
-              table.appendChild(row);
-          }
+
+    let entries = Object.entries(dataCont)
+    dataContFinal = entries.map( ([key, val] = entry) => {
+      return val;
+    });
+
+    document.querySelector('.chart-container').innerHTML = `
+        <canvas id="myChart" aria-label="chart" style="width:100%;height:65vh"></canvas>
+    `
+
+    var chrt = document.getElementById("myChart").getContext("2d");
+    var chartId = new Chart(chrt, {
+       type: 'pie',
+       data: {
+          labels: labelContFinal,
+          datasets: [{
+             label: "Common Diagnosis Chart",
+             data: dataContFinal,
+             backgroundColor: ['lightgreen', 'gold', 'lightblue'],
+             hoverOffset: 5
+          }],
+       },
+       options: {
+          responsive: false,
+       },
+    });
 }
-
-checkCase(document.querySelector('#form1'));

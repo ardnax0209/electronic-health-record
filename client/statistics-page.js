@@ -54,7 +54,7 @@ document.querySelector('#app').innerHTML = `
                     <span class="submenu-icon ml-auto"></span>
                 </div>
             </a>
-            <a href="#submenu3" data-toggle="collapse" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+            <a href="decking-page.html" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
                 <div class="d-flex w-100 justify-content-start align-items-center">
                     <span class="fa fa-user fa-fw mr-3"></span>
                     <span class="menu-collapsed">Decking / Scheduling</span>
@@ -116,7 +116,7 @@ document.querySelector('#app').innerHTML = `
           </div>
         </div>
         <div class="chart-container">
-            <canvas id="myChart" aria-label="chart" style="width:100%;height:65vh"></canvas>
+
         </div>
     </div>
 `
@@ -181,19 +181,24 @@ async function createTbl() {
          labelContFinal.push(labelCont[i]);
       }
     }
-//Object.keys(resJson).length
-    for (let i = 0; i < dataCont.length; i++) {
-        console.log("test");
-      }
+
+    let entries = Object.entries(dataCont)
+    dataContFinal = entries.map( ([key, val] = entry) => {
+      return val;
+    });
+
+    document.querySelector('.chart-container').innerHTML = `
+        <canvas id="myChart" aria-label="chart" style="width:100%;height:65vh"></canvas>
+    `
 
     var chrt = document.getElementById("myChart").getContext("2d");
     var chartId = new Chart(chrt, {
        type: 'pie',
        data: {
-          labels: ["HTML", "CSS", "JAVASCRIPT"],
+          labels: labelContFinal,
           datasets: [{
              label: "Common Diagnosis Chart",
-             data: [20, 40, 13],
+             data: dataContFinal,
              backgroundColor: ['lightgreen', 'gold', 'lightblue'],
              hoverOffset: 5
           }],

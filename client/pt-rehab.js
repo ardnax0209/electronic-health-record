@@ -54,7 +54,7 @@ document.querySelector('#app').innerHTML = `
                     <span class="submenu-icon ml-auto"></span>
                 </div>
             </a>
-            <a href="#submenu3" data-toggle="collapse" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+            <a href="decking-page.html" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
                 <div class="d-flex w-100 justify-content-start align-items-center">
                     <span class="fa fa-user fa-fw mr-3"></span>
                     <span class="menu-collapsed">Decking / Scheduling</span>
