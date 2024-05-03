@@ -29,18 +29,21 @@ let patientJson = await fetch('http://localhost:8080/patient', {
 	.catch(err => console.error(err));
 
 document.querySelector('#app').innerHTML = `
-    <div class="page-header">
-        <div id="page-logo">
-            <img src="../public/logo-ehr.png" alt="logo" width="400" height="96">
-        </div>
-        <div id="person-info">
-            ${jsonRes.name}
-            <br/>
-            ${jsonRes.caseNumber}
-        </div>
-        <div id="person-pic">
-            <img src=${imgSrc} alt="logo" width="150" height="100">
-        </div>
+	<div class="login-header">
+		&nbsp;
+	</div>
+	<div class="page-header">
+		<div id="page-logo">
+			<img src="public/logo-with-name.png" alt="logo" width="400" height="96">
+		</div>
+		<div id="person-info">
+			<b>${jsonRes.name}</b>
+			<br/>
+			${jsonRes.caseNumber}
+		</div>
+		<div id="person-pic">
+			<img src=${imgSrc} alt="logo" width="100" height="100">
+		</div>
     </div>
     <div class="main-content">
 		<div class="menu-settings">
@@ -88,6 +91,13 @@ document.querySelector('#app').innerHTML = `
 						<span class="submenu-icon ml-auto"></span>
 					</div>
 				</a>
+				<a href="index.html" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start" id="profile-container">
+                <div class="d-flex w-100 justify-content-start align-items-center">
+                    <span class="fa fa-dashboard fa-fw mr-3"></span>
+                    <span class="menu-collapsed">Log out</span>
+                    <span class="submenu-icon ml-auto"></span>
+                </div>
+            	</a>
 			</ul><!-- List Group END-->
 			<div class="input-group" id="admin-search-div">
 				<div class="form-outline" id="form-outline-id" data-mdb-input-init>
@@ -95,7 +105,7 @@ document.querySelector('#app').innerHTML = `
 					<input type="search" id="form1" class="form-control" placeholder="Case Number"
 					/>
 				</div>
-				<button type="button" class="btn btn-primary" data-mdb-ripple-init>New Patient
+				<button type="button" class="btn btn-primary" id="loginBttn" data-mdb-ripple-init>New Patient
 					<i class="fas fa-search"></i>
 				</button>
 			</div>
@@ -103,21 +113,20 @@ document.querySelector('#app').innerHTML = `
 		<div class="case-information">
 		  <div class="personal-info">
 		  	<div class="first-column">
-			  Name: ${patientJson.name}
-			  <br/>Patient ID: ${patientJson.patientId}
-			  <br/>Contact E-mail: ${patientJson.email}
-			  <br/>Contact Number: ${patientJson.phone}
+			  <b>Name:</b> ${patientJson.name}
+			  <b><br/>Patient ID:</b> ${patientJson.patientId}
+			  <b><br/>Contact E-mail:</b> ${patientJson.email}
+			  <b><br/>Contact Number:</b> ${patientJson.phone}
 			</div>
 			<div class="second-column">
-				Diagnosis: ${patientJson.diagnosis}
-				<br/>DOB: ${patientJson.bday}
-				<br/>Sex: ${patientJson.sex}
-				<br/>HMO: ${patientJson.hmo}
+				<b>Diagnosis:</b> ${patientJson.diagnosis}
+				<b><br/>DOB:</b> ${patientJson.bday}
+				<b><br/>Sex:</b> ${patientJson.sex}
+				<b><br/>HMO:</b> ${patientJson.hmo}
 			</div>	
 		  </div>
 		  <div class="status-information">
-		  	Status
-			<br/>
+		  	<h4>Status</h4>
 			<div class="container">
 				<table id="myTable">
 					
@@ -125,11 +134,10 @@ document.querySelector('#app').innerHTML = `
 			</div>
 		  </div>
 		  <div class="history">
-		  	History
+		  	<h4>History</h4>
 			<div class="history-details">
-				&nbsp;&nbsp;&nbsp;
-				Referred from:
-				<br/><br/>
+				<h5>Referred from:</h5>
+				<br/>
 				<div class="form-container">
 					<label for="exampleFormControlSelect1">REFER TO:</label>
 					<select class="form-control" id="drpdwn-form">

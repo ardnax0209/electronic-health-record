@@ -12,6 +12,9 @@ let verNum = await fetch('http://localhost:8080/version', {
 		.catch(err => console.error(err));
 
 document.querySelector('#app').innerHTML = `
+	<div class="login-header">
+		&nbsp;
+	</div>
 	<div id="login-form">
 		<div id="logo-container">
 				<img src="${logoName}" alt="logo">

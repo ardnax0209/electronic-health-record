@@ -16,17 +16,20 @@ let jsonRes = await fetch('http://localhost:8080/user', {
 var imgSrc = "public/" + jsonRes.pictureName;
 
 document.querySelector('#app').innerHTML = `
+    <div class="login-header">
+        &nbsp;
+    </div>
     <div class="page-header">
         <div id="page-logo">
-            <img src="public/logo-ehr.png" alt="logo" width="400" height="96">
+            <img src="public/logo-with-name.png" alt="logo" width="400" height="96">
         </div>
         <div id="person-info">
-            ${jsonRes.name}
+            <b>${jsonRes.name}</b>
             <br/>
             ${jsonRes.caseNumber}
         </div>
         <div id="person-pic">
-            <img src=${imgSrc} alt="logo" width="150" height="100">
+            <img src=${imgSrc} alt="logo" width="100" height="100">
         </div>
     </div>
     <div class="menu-settings">
@@ -74,6 +77,13 @@ document.querySelector('#app').innerHTML = `
                     <span class="submenu-icon ml-auto"></span>
                 </div>
             </a>
+            <a href="index.html" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start" id="profile-container">
+                <div class="d-flex w-100 justify-content-start align-items-center">
+                    <span class="fa fa-dashboard fa-fw mr-3"></span>
+                    <span class="menu-collapsed">Log out</span>
+                    <span class="submenu-icon ml-auto"></span>
+                </div>
+            </a>
         </ul><!-- List Group END-->
         <div class="input-group" id="admin-search-div">
             <div class="form-outline" id="form-outline-id" data-mdb-input-init>
@@ -81,7 +91,7 @@ document.querySelector('#app').innerHTML = `
                 <input type="search" id="form1" class="form-control" placeholder="Case Number"
                 />
             </div>
-            <button type="button" class="btn btn-primary" data-mdb-ripple-init>New Patient
+            <button type="button" class="btn btn-primary" id="loginBttn" data-mdb-ripple-init>New Patient
                 <i class="fas fa-search"></i>
             </button>
         </div>
@@ -89,7 +99,7 @@ document.querySelector('#app').innerHTML = `
     <div class="main-body">
         <div class="selection-container">
           <div class="diag-drpdwn">
-            <label for="diag-selection">Diagnosis:</label>
+            <label for="diag-selection" class="field-labels">Diagnosis:</label>
             <select class="form-control" id="diag-selection">
                 <option>Cardio Cases</option>
                 <option>Pulmonary Cases</option>
@@ -98,7 +108,7 @@ document.querySelector('#app').innerHTML = `
             </select>
           </div>
           <div class="month-drpdwn">
-            <label for="month-selection">Month:</label>
+            <label for="month-selection" class="field-labels">Month:</label>
             <select class="form-control" id="month-selection">
                 <option>January</option>
                 <option>February</option>
@@ -188,7 +198,7 @@ async function createTbl() {
     });
 
     document.querySelector('.chart-container').innerHTML = `
-        <canvas id="myChart" aria-label="chart" style="width:100%;height:65vh"></canvas>
+        <canvas id="myChart" aria-label="chart" style="width:100%;height:60vh;margin-top:2%;"></canvas>
     `
 
     var chrt = document.getElementById("myChart").getContext("2d");

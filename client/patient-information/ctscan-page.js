@@ -16,18 +16,21 @@ var fName = localStorage.getItem("caseNumber") + "-ctscan.pdf";
 var pdfPath = "../public/" + fName;
 
 document.querySelector('#app').innerHTML = `
-    <div class="page-header">
-        <div id="page-logo">
-            <img src="../public/logo-ehr.png" alt="logo" width="400" height="96">
-        </div>
-        <div id="person-info">
-            ${jsonRes.name}
-            <br/>
-            ${jsonRes.caseNumber}
-        </div>
-        <div id="person-pic">
-            <img src=${imgSrc} alt="logo" width="150" height="100">
-        </div>
+	<div class="login-header">
+		&nbsp;
+	</div>
+	<div class="page-header">
+		<div id="page-logo">
+			<img src="../public/logo-with-name.png" alt="logo" width="400" height="96">
+		</div>
+		<div id="person-info">
+			<b>${jsonRes.name}</b>
+			<br/>
+			${jsonRes.caseNumber}
+		</div>
+		<div id="person-pic">
+			<img src=${imgSrc} alt="logo" width="100" height="100">
+		</div>
     </div>
     <div class="main-content">
 		<div class="menu-settings">
@@ -101,6 +104,13 @@ document.querySelector('#app').innerHTML = `
 							<span class="menu-collapsed">PRO</span>
 						</a>
 					</div>
+					<a href="../index.html" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start" id="profile-container">
+						<div class="d-flex w-100 justify-content-start align-items-center">
+							<span class="fa fa-dashboard fa-fw mr-3"></span>
+							<span class="menu-collapsed">Log out</span>
+							<span class="submenu-icon ml-auto"></span>
+						</div>
+					</a>
 				</ul><!-- List Group END-->
 			</div>
 		</div>
