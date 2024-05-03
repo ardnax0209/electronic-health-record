@@ -1,9 +1,6 @@
 import { checkCase } from './chckCaseNumber-admin.js';
 import { Calendar } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import listPlugin from '@fullcalendar/list';
-import interactionPlugin from '@fullcalendar/interaction';
 
 let jsonRes = await fetch('http://localhost:8080/user', {
           method: 'GET',
@@ -59,7 +56,7 @@ document.querySelector('#app').innerHTML = `
                     <span class="submenu-icon ml-auto"></span>
                 </div>
             </a>
-            <a href="decking-page.html" data-toggle="collapse" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
+            <a href="decking-page.html" aria-expanded="false" class="bg-dark list-group-item list-group-item-action flex-column align-items-start">
                 <div class="d-flex w-100 justify-content-start align-items-center">
                     <span class="fa fa-user fa-fw mr-3"></span>
                     <span class="menu-collapsed">Decking / Scheduling</span>
@@ -68,7 +65,7 @@ document.querySelector('#app').innerHTML = `
             </a>
             <!-- Submenu content -->
             <div id='submenu3'>
-                <a href="schedule-page.html" class="list-group-item list-group-item-action bg-dark text-white">
+                <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
                     <span class="menu-collapsed">+ Add New</span>
                 </a>
             </div>
@@ -92,8 +89,68 @@ document.querySelector('#app').innerHTML = `
         </div>
     </div>
     <div class="main-body">
-        <div id="calendar">
-          
+        <div class="main-top">
+          <div class="first-row-fields">
+            <label for="exampleFormControlInput1" class="field-labels">Case No:</label>
+            <input type="text" class="form-control" id="notes-form">
+
+            <label for="exampleFormControlInput1" class="field-labels">Diagnosis:</label>
+            <input type="text" class="form-control" id="notes-form">
+          </div>
+          <div class="second-row-fields">
+            <label for="exampleFormControlInput1" class="field-labels">PT Name:</label>
+            <input type="text" class="form-control" id="notes-form">
+          </div>
+        </div>
+        <div class="main-bottom">
+          <div class="date-container">
+            <p>Date</p>
+            <p>Earliest Available</p>
+            <div id="calendar">
+
+            </div>
+          </div>
+          <div class="time-container">
+            Time
+            <table>
+                <tr>
+                    <td>
+                        10:00 - 11:00
+                    </td>
+                    <td>
+                        Avail
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        11:00 - 12:00
+                    </td>
+                    <td>
+                        Not avail
+                    </td>
+                </tr>
+            </table>
+            <br/>
+            PT Available
+            <table>
+                <tr>
+                    <td>
+                        Gange, Rafael
+                    </td>
+                    <td>
+                        Not avail
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Bie, Jhieliannd P.
+                    </td>
+                    <td>
+                        Avail
+                    </td>
+                </tr>
+            </table>
+          </div>
         </div>
     </div>
 `
@@ -102,15 +159,12 @@ checkCase(document.querySelector('#form1'));
 
 let calendarEl = document.getElementById('calendar');
 let calendar = new Calendar(calendarEl, {
-  plugins: [ dayGridPlugin, timeGridPlugin, listPlugin, interactionPlugin ],
+  plugins: [ dayGridPlugin ],
   initialView: 'dayGridMonth',
   headerToolbar: {
     left: 'prev,next today',
     center: 'title',
-    right: 'dayGridMonth,timeGridWeek,listWeek'
-  },
-  dateClick: function () {
-    window.location.replace("schedule-page.html");
+    right: 'dayGridMonth'
   },
   events: [
     {

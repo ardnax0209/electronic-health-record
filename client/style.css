@@ -146,6 +146,7 @@ th, td {
 	right: 2px;
 	position: absolute;
 	top: 175px;
+	height: 73vh;
 }
 
 /* Start of table */
@@ -193,6 +194,29 @@ th {
 
 .diag-drpdwn, .month-drpdwn {
 	display: flex;
+}
+
+#calendar {
+	height: 100%;
+}
+
+.first-row-fields {
+	display: flex;
+}
+
+.second-row-fields {
+	display: flex;
+	margin-top: 1%;
+}
+
+.field-labels {
+	margin-right: 1%;
+	margin-left: 1%;
+}
+
+.main-bottom {
+	display: flex;
+	justify-content: space-around;
 }
 
 /* Bootstrap */
